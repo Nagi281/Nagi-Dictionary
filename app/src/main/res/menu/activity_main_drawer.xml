@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_home_black_24dp"
+            android:title="@string/menu_en_vn" />
+        <item
+            android:id="@+id/nav_en_en"
+            android:icon="@drawable/ic_library_books_black_24dp"
+            android:title="@string/menu_en_en" />
+        <item
+            android:id="@+id/nav_vn_en"
+            android:icon="@drawable/ic_edit_black_24dp"
+            android:title="@string/menu_vn_en" />
+        <item
+            android:id="@+id/nav_favorites"
+            android:icon="@drawable/ic_format_paint_black_24dp"
+            android:title="@string/menu_favorites" />
+        <item
+            android:id="@+id/nav_your_words"
+            android:icon="@drawable/ic_book_black_24dp"
+            android:title="@string/menu_your_words" />
+    </group>
+
+    <item android:title="Communicate">
+        <menu>
+            <item
+                android:id="@+id/nav_flashcard"
+                android:icon="@drawable/ic_thumb_up_black_24dp"
+                android:title="@string/menu_share" />
+            <item
+                android:id="@+id/nav_speaking"
+                android:icon="@drawable/ic_live_help_black_24dp"
+                android:title="@string/menu_help" />
+        </menu>
+    </item>
+
+</menu>

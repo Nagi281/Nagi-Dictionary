@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.example.nagidictionary.ui.home.HomeFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/nav_en_en"
+        android:name="com.example.nagidictionary.ui.english_english.English_EnglishFragment"
+        android:label="@string/menu_en_en"
+        tools:layout="@layout/fragment_en_en" />
+
+    <fragment
+        android:id="@+id/nav_vn_en"
+        android:name="com.example.nagidictionary.ui.vietnamese_english.Vietnamese_EnglishFragment"
+        android:label="@string/menu_vn_en"
+        tools:layout="@layout/fragment_vn_en" />
+    <fragment
+        android:id="@+id/nav_favorites"
+        android:name="com.example.nagidictionary.ui.favorites.FavoritesFragment"
+        android:label="@string/menu_favorites"
+        tools:layout="@layout/fragment_favorites" />
+    <fragment
+        android:id="@+id/nav_your_words"
+        android:name="com.example.nagidictionary.ui.your_words.YourWordsFragment"
+        android:label="@string/menu_your_words"
+        tools:layout="@layout/fragment_your_words" />
+    <fragment
+        android:id="@+id/nav_flashcard"
+        android:name="com.example.nagidictionary.ui.speaking.SpeakingCoachFragment"
+        android:label="@string/menu_share"
+        tools:layout="@layout/fragment_flashcard" />
+
+    <fragment
+        android:id="@+id/nav_speaking"
+        android:name="com.example.nagidictionary.ui.flashcard.FlashCardFragment"
+        android:label="@string/menu_help"
+        tools:layout="@layout/fragment_speaking" />
+</navigation>
