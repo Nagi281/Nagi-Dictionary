@@ -1,45 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <LinearLayout
+        android:id="@+id/search_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/search_bar"
-        android:orientation="horizontal"
-        android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="horizontal"
         android:weightSum="9">
+
         <AutoCompleteTextView
+            android:id="@+id/acTv_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/acTv_search"
-            android:hint="Word"
-            android:textSize="20sp"
             android:layout_weight="7"
-            android:completionThreshold="1" />
+            android:completionThreshold="1"
+            android:hint="Word"
+            android:textSize="20sp" />
+
         <ImageButton
+            android:id="@+id/btn_speak"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/btn_speak"
             android:src="@drawable/ic_volume_up_black_24dp"
             android:tint="#000000" />
     </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_words"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginRight="20dp"
+        android:layout_below="@+id/search_bar"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="10dp"
-        android:layout_below="@+id/search_bar"
-        android:id="@+id/rv_words"/>
+        android:layout_marginRight="20dp" />
+
     <ProgressBar
+        android:id="@+id/pb_load"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/pb_load"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 </RelativeLayout>

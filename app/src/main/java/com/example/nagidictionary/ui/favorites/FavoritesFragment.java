@@ -37,7 +37,8 @@ public class FavoritesFragment extends Fragment {
 
     public static class FavoriteAdapter extends FragmentPagerAdapter {
         private static int NUM_ITEMS = 2;
-        private String[] titles = {"English - Vietnamese","Vietnamese - English"};
+        private String[] titles = {"English - Vietnamese", "Vietnamese - English"};
+
         public FavoriteAdapter(FragmentManager fragmentManager) {
             super(fragmentManager);
         }
@@ -55,11 +56,12 @@ public class FavoritesFragment extends Fragment {
                 case 0: // Fragment # 0 - This will show FirstFragment
                     return favoriteWord_Fragment.newInstance(0, MainActivity.DATABASE_EN_VIE);
                 case 1: // Fragment # 0 - This will show FirstFragment different title
-                    return favoriteWord_Fragment.newInstance(1,MainActivity.DATABASE_VIE_EN);
+                    return favoriteWord_Fragment.newInstance(1, MainActivity.DATABASE_VIE_EN);
                 default:
                     return null;
             }
         }
+
         // Returns the page title for the top indicator
         @Override
         public CharSequence getPageTitle(int position) {

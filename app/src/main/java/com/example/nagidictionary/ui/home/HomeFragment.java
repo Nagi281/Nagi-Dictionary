@@ -38,7 +38,7 @@ import model.Word;
 import static android.app.Activity.RESULT_OK;
 
 public class HomeFragment extends Fragment {
-    private static final int REQUEST_CODE =1234;
+    private static final int REQUEST_CODE = 1234;
     private RecyclerView recyclerView;
     private List<Word> wordList = new ArrayList<>();
     private customApdater customApdater;
@@ -51,7 +51,7 @@ public class HomeFragment extends Fragment {
 
     private ImageButton mBtnSpeak;
 
-    private int currentIndex,totalItems,scrollOutItems,offset;
+    private int currentIndex, totalItems, scrollOutItems, offset;
     private boolean isScrolling;
     private View root;
     private DatabaseAccess dbAccess;
@@ -61,12 +61,13 @@ public class HomeFragment extends Fragment {
         root = inflater.inflate(R.layout.fragment_home, container, false);
         currentIndex = 120;
         offset = 10;
-        dbAccess = DatabaseAccess.getInstance(getActivity(),MainActivity.DATABASE_EN_VIE);
+        dbAccess = DatabaseAccess.getInstance(getActivity(), MainActivity.DATABASE_EN_VIE);
         addControl();
         addEvent();
         fetchMoreData();
         return root;
     }
+
     private void addControl() {
         recyclerView = root.findViewById(R.id.rv_words);
         progressBar = root.findViewById(R.id.pb_load);
@@ -78,7 +79,7 @@ public class HomeFragment extends Fragment {
 
         mAcTvSearch = root.findViewById(R.id.acTv_search);
         searchAdapter = new searchAdapter(getContext(),
-                                R.layout.search_item,searchList);
+                R.layout.search_item, searchList);
         mAcTvSearch.setAdapter(searchAdapter);
         mBtnSpeak = root.findViewById(R.id.btn_speak);
     }
@@ -88,7 +89,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                if(newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
+                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
                     isScrolling = true;
                 }
             }
@@ -99,7 +100,7 @@ public class HomeFragment extends Fragment {
                 currentIndex = mLayoutManager.getChildCount();
                 totalItems = mLayoutManager.getItemCount();
                 scrollOutItems = mLayoutManager.findFirstVisibleItemPosition();
-                if(isScrolling && (currentIndex+scrollOutItems == totalItems)) {
+                if (isScrolling && (currentIndex + scrollOutItems == totalItems)) {
                     isScrolling = false;
                     progressBar.setVisibility(View.VISIBLE);
                     new WordLoaderTask().execute();
@@ -108,19 +109,21 @@ public class HomeFragment extends Fragment {
             }
         });
         recyclerView.addOnItemTouchListener(
-                new RecyclerItemClickListener(getContext(),recyclerView,
+                new RecyclerItemClickListener(getContext(), recyclerView,
                         new RecyclerItemClickListener.OnItemClickListener() {
-                            @Override public void onItemClick(View view, int position) {
+                            @Override
+                            public void onItemClick(View view, int position) {
                                 Intent intent = new Intent(getActivity(), WordActivity.class);
                                 Bundle bundle = new Bundle();
-                                bundle.putSerializable("word",wordList.get(position));
+                                bundle.putSerializable("word", wordList.get(position));
                                 intent.putExtra("dictionaryCOde",
                                         MainActivity.DATABASE_EN_VIE);
-                                intent.putExtra("package",bundle);
+                                intent.putExtra("package", bundle);
                                 startActivity(intent);
                             }
 
-                            @Override public void onLongItemClick(View view, int position) {
+                            @Override
+                            public void onLongItemClick(View view, int position) {
                                 // do whatever
                             }
                         })
@@ -130,10 +133,12 @@ public class HomeFragment extends Fragment {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 new WordSearcher().execute();
             }
+
             @Override
             public void afterTextChanged(Editable s) {
 
@@ -144,18 +149,18 @@ public class HomeFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Word word = dbAccess.getWordByName(searchList.get(position));
-                if(word != null) {
-                    Intent intent = new Intent(getActivity(),WordActivity.class);
+                if (word != null) {
+                    Intent intent = new Intent(getActivity(), WordActivity.class);
                     Bundle bundle = new Bundle();
-                    bundle.putSerializable("word",word);
-                    intent.putExtra("package",bundle);
+                    bundle.putSerializable("word", word);
+                    intent.putExtra("package", bundle);
                     intent.putExtra("dictionaryCOde", MainActivity.DATABASE_EN_VIE);
                     searchList.clear();
                     searchAdapter.notifyDataSetChanged();
                     startActivity(intent);
                 } else {
                     Toast.makeText(getContext(),
-                            "Action to quick,Please try again!",Toast.LENGTH_SHORT).show();
+                            "Action to quick,Please try again!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -166,31 +171,33 @@ public class HomeFragment extends Fragment {
             }
         });
     }
-    private void startVoiceRecognitionActivity()  {
+
+    private void startVoiceRecognitionActivity() {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Voice searching...");
         startActivityForResult(intent, REQUEST_CODE);
     }
+
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK)
-        {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
             mAcTvSearch.setText(RecognizerIntent.EXTRA_RESULTS.toString());
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
+
     private void fetchMoreData() {
-        ArrayList<Word> temp = dbAccess.getWordsOffset(totalItems+120,offset);
-        for(int i =0;i<temp.size();i++) {
+        ArrayList<Word> temp = dbAccess.getWordsOffset(totalItems + 120, offset);
+        for (int i = 0; i < temp.size(); i++) {
             wordList.add(Word.Copy(temp.get(i)));
         }
     }
+
     private void searchString() {
         String str = mAcTvSearch.getText().toString();
         ArrayList<String> temp = dbAccess.getWordsStartWith(str);
-        for(int i =0;i<temp.size();i++) {
+        for (int i = 0; i < temp.size(); i++) {
             searchList.add(temp.get(i));
         }
     }
@@ -208,7 +215,7 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    class WordSearcher extends AsyncTask<Void,Void,Void> {
+    class WordSearcher extends AsyncTask<Void, Void, Void> {
         protected Void doInBackground(Void... params) {
             searchString();
             return null;

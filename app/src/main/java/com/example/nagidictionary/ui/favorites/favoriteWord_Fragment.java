@@ -42,7 +42,7 @@ public class favoriteWord_Fragment extends Fragment {
         favoriteWord_Fragment fragmentFirst = new favoriteWord_Fragment();
         Bundle bundle = new Bundle();
         bundle.putInt("someInt", page);
-        bundle.putString("dictionary",dictionaryCode);
+        bundle.putString("dictionary", dictionaryCode);
         fragmentFirst.setArguments(bundle);
         return fragmentFirst;
     }
@@ -52,8 +52,9 @@ public class favoriteWord_Fragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         page = getArguments().getInt("someInt", 0);
-        dictionaryCode = getArguments().getString("dictionary","anh_viet");
+        dictionaryCode = getArguments().getString("dictionary", "anh_viet");
     }
+
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -75,7 +76,7 @@ public class favoriteWord_Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_favorite_list, container, false);
-        dbAccess = DatabaseAccess.getInstance(getContext(),dictionaryCode);
+        dbAccess = DatabaseAccess.getInstance(getContext(), dictionaryCode);
         recyclerView = view.findViewById(R.id.rv_favorite);
         mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
@@ -88,27 +89,31 @@ public class favoriteWord_Fragment extends Fragment {
 
     private void addEvent() {
         recyclerView.addOnItemTouchListener(
-            new RecyclerItemClickListener(getContext(),recyclerView,
-                new RecyclerItemClickListener.OnItemClickListener() {
-                    @Override public void onItemClick(View view, int position) {
-                        gotoWordDetail(position);
-                    }
-                    @Override public void onLongItemClick(View view, int position) {
-                        cancelFavoriteOfAWord(position);
-                    }
-                })
+                new RecyclerItemClickListener(getContext(), recyclerView,
+                        new RecyclerItemClickListener.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View view, int position) {
+                                gotoWordDetail(position);
+                            }
+
+                            @Override
+                            public void onLongItemClick(View view, int position) {
+                                cancelFavoriteOfAWord(position);
+                            }
+                        })
         );
     }
 
     public void gotoWordDetail(int position) {
         Intent intent = new Intent(getActivity(), WordActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putSerializable("word",favorites.get(position));
+        bundle.putSerializable("word", favorites.get(position));
         intent.putExtra("dictionaryCOde",
                 MainActivity.DATABASE_EN_VIE);
-        intent.putExtra("package",bundle);
+        intent.putExtra("package", bundle);
         startActivity(intent);
     }
+
     public void cancelFavoriteOfAWord(final int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Remove Favorite Confirm?");
@@ -117,13 +122,13 @@ public class favoriteWord_Fragment extends Fragment {
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if(dbAccess.cancelLikeAWord(favorites.get(position).getId())){
+                if (dbAccess.cancelLikeAWord(favorites.get(position).getId())) {
                     favorites.remove(position);
                     customApdater.notifyDataSetChanged();
-                    Toast.makeText(getContext(),"Removed from favorite",
+                    Toast.makeText(getContext(), "Removed from favorite",
                             Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getContext(),"Something went wrong!",
+                    Toast.makeText(getContext(), "Something went wrong!",
                             Toast.LENGTH_SHORT).show();
                 }
             }

@@ -36,7 +36,7 @@ import model.Word;
 import static android.app.Activity.RESULT_OK;
 
 public class Vietnamese_EnglishFragment extends Fragment {
-    private static final int REQUEST_CODE =1234;
+    private static final int REQUEST_CODE = 1234;
     private RecyclerView recyclerView;
     private List<Word> wordList = new ArrayList<>();
     private customApdater customApdater;
@@ -49,7 +49,7 @@ public class Vietnamese_EnglishFragment extends Fragment {
 
     private ImageButton mBtnSpeak;
 
-    private int currentIndex,totalItems,scrollOutItems,offset;
+    private int currentIndex, totalItems, scrollOutItems, offset;
     private boolean isScrolling;
     private View root;
     private DatabaseAccess dbAccess;
@@ -59,12 +59,13 @@ public class Vietnamese_EnglishFragment extends Fragment {
         root = inflater.inflate(R.layout.fragment_vn_en, container, false);
         currentIndex = 4;
         offset = 10;
-        dbAccess = DatabaseAccess.getInstance(getActivity(),MainActivity.DATABASE_VIE_EN);
+        dbAccess = DatabaseAccess.getInstance(getActivity(), MainActivity.DATABASE_VIE_EN);
         addControl();
         addEvent();
         fetchMoreData();
         return root;
     }
+
     private void addControl() {
         progressBar = root.findViewById(R.id.pb_load);
         mBtnSpeak = root.findViewById(R.id.btn_speak);
@@ -76,15 +77,16 @@ public class Vietnamese_EnglishFragment extends Fragment {
         recyclerView.setAdapter(customApdater);
 
         mAcTvSearch = root.findViewById(R.id.acTv_search);
-        searchAdapter = new searchAdapter(getContext(),R.layout.search_item,searchList);
+        searchAdapter = new searchAdapter(getContext(), R.layout.search_item, searchList);
         mAcTvSearch.setAdapter(searchAdapter);
     }
+
     private void addEvent() {
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                if(newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
+                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
                     isScrolling = true;
                 }
             }
@@ -95,7 +97,7 @@ public class Vietnamese_EnglishFragment extends Fragment {
                 currentIndex = mLayoutManager.getChildCount();
                 totalItems = mLayoutManager.getItemCount();
                 scrollOutItems = mLayoutManager.findFirstVisibleItemPosition();
-                if(isScrolling && (currentIndex+scrollOutItems == totalItems)) {
+                if (isScrolling && (currentIndex + scrollOutItems == totalItems)) {
                     isScrolling = false;
                     progressBar.setVisibility(View.VISIBLE);
                     new WordLoaderTask().execute();
@@ -104,18 +106,21 @@ public class Vietnamese_EnglishFragment extends Fragment {
             }
         });
         recyclerView.addOnItemTouchListener(
-                new RecyclerItemClickListener(getContext(),recyclerView,
+                new RecyclerItemClickListener(getContext(), recyclerView,
                         new RecyclerItemClickListener.OnItemClickListener() {
-                            @Override public void onItemClick(View view, int position) {
+                            @Override
+                            public void onItemClick(View view, int position) {
                                 Intent intent = new Intent(getActivity(), WordActivity.class);
                                 Bundle bundle = new Bundle();
-                                bundle.putSerializable("word",wordList.get(position));
-                                intent.putExtra("package",bundle);
+                                bundle.putSerializable("word", wordList.get(position));
+                                intent.putExtra("package", bundle);
                                 intent.putExtra("dictionaryCOde",
                                         MainActivity.DATABASE_VIE_EN);
                                 startActivity(intent);
                             }
-                            @Override public void onLongItemClick(View view, int position) {
+
+                            @Override
+                            public void onLongItemClick(View view, int position) {
                             }
                         })
         );
@@ -124,10 +129,12 @@ public class Vietnamese_EnglishFragment extends Fragment {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 searchList.clear();
             }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 new WordSearcher().execute();
             }
+
             @Override
             public void afterTextChanged(Editable s) {
 
@@ -136,13 +143,13 @@ public class Vietnamese_EnglishFragment extends Fragment {
         mAcTvSearch.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Word word = dbAccess.getWordByName(searchList.get(position));
-                    Intent intent = new Intent(getActivity(),WordActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("word",word);
-                    intent.putExtra("package",bundle);
-                    intent.putExtra("dictionaryCOde", MainActivity.DATABASE_VIE_EN);
-                    startActivity(intent);
+                Word word = dbAccess.getWordByName(searchList.get(position));
+                Intent intent = new Intent(getActivity(), WordActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("word", word);
+                intent.putExtra("package", bundle);
+                intent.putExtra("dictionaryCOde", MainActivity.DATABASE_VIE_EN);
+                startActivity(intent);
             }
         });
         mBtnSpeak.setOnClickListener(new View.OnClickListener() {
@@ -152,32 +159,33 @@ public class Vietnamese_EnglishFragment extends Fragment {
             }
         });
     }
-    private void startVoiceRecognitionActivity()  {
+
+    private void startVoiceRecognitionActivity() {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Voice searching...");
         startActivityForResult(intent, REQUEST_CODE);
     }
+
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK)
-        {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
             mAcTvSearch.setText(RecognizerIntent.EXTRA_RESULTS.toString());
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
     public void fetchMoreData() {
-        ArrayList<Word> temp = dbAccess.getWordsOffset(totalItems+4,offset);
-        for(int i =0;i<temp.size();i++) {
+        ArrayList<Word> temp = dbAccess.getWordsOffset(totalItems + 4, offset);
+        for (int i = 0; i < temp.size(); i++) {
             wordList.add(Word.Copy(temp.get(i)));
         }
     }
+
     public void searchString() {
         String str = mAcTvSearch.getText().toString();
         ArrayList<String> temp = dbAccess.getWordsStartWith(str);
-        for(int i =0;i<temp.size();i++) {
+        for (int i = 0; i < temp.size(); i++) {
             searchList.add(temp.get(i));
         }
     }
@@ -194,7 +202,7 @@ public class Vietnamese_EnglishFragment extends Fragment {
         }
     }
 
-    class WordSearcher extends AsyncTask<Void,Void,Void> {
+    class WordSearcher extends AsyncTask<Void, Void, Void> {
         protected Void doInBackground(Void... params) {
             searchString();
             return null;

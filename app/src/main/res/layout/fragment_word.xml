@@ -1,32 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_speak"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/fab_speak"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
+        android:layout_margin="10dp"
         android:backgroundTint="@color/colorPrimary"
-        android:src="@drawable/ic_volume_up_black_24dp"
-        android:layout_margin="10dp"/>
+        android:src="@drawable/ic_volume_up_black_24dp" />
+
     <WebView
+        android:id="@+id/wv_web"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="20dp"
         android:layout_alignParentTop="true"
-        android:id="@+id/wv_web">
-    </WebView>
+        android:padding="20dp"></WebView>
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_like"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_thumb_up_black_24dp"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_marginBottom="20dp"
+        android:layout_alignParentBottom="true"
         android:layout_marginRight="20dp"
-        android:id="@+id/fab_like"/>
+        android:layout_marginBottom="20dp"
+        android:src="@drawable/ic_thumb_up_black_24dp" />
 </RelativeLayout>

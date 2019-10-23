@@ -10,34 +10,42 @@ public class Word implements Serializable {
     public Word() {
 
     }
-    public Word(int id,String name,String content){
+
+    public Word(int id, String name, String content) {
         this.id = id;
-        this.name=name;
-        this.content=content;
+        this.name = name;
+        this.content = content;
         insertScriptForHref();
     }
 
     public static Word Copy(Word word) {
-        return new Word(word.getId(),word.getName(),word.getContent());
+        return new Word(word.getId(), word.getName(), word.getContent());
     }
+
     public void setId(int id) {
-        this.id= id;
+        this.id = id;
     }
+
     public int getId() {
         return this.id;
     }
+
     public void setName(String name) {
-        this.name=name;
+        this.name = name;
     }
+
     public String getName() {
         return this.name;
     }
+
     public void setContent(String content) {
         this.content = content;
     }
+
     public String getContent() {
         return this.content;
     }
+
     public void insertScriptForHref() {
         this.content = this.content.replace("class=\"aexample\"",
                 "onclick=\"return false;\" class=\"aexample\"");

@@ -16,6 +16,7 @@ public class WordActivity extends AppCompatActivity {
     private ViewPager mVpWord;
     FragmentPagerAdapter adapterViewPager;
     private static String dictionaryCode;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,11 +25,11 @@ public class WordActivity extends AppCompatActivity {
         Bundle bundle = intent.getExtras().getBundle("package");
         dictionaryCode = intent.getExtras().getString("dictionaryCOde");
         word = (Word) bundle.getSerializable("word");
-        try{
-            getSupportActionBar().setTitle(word.getName()+"");
+        try {
+            getSupportActionBar().setTitle(word.getName() + "");
             getSupportActionBar().setHomeButtonEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }catch (Exception e) {
+        } catch (Exception e) {
         }
 
         mVpWord = findViewById(R.id.vp_Word);
@@ -56,11 +57,11 @@ public class WordActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0: // Fragment # 0 - This will show FirstFragment
-                    return WordDetailsFragment.newInstance(0,dictionaryCode,word.getId()-1);
+                    return WordDetailsFragment.newInstance(0, dictionaryCode, word.getId() - 1);
                 case 1: // Fragment # 0 - This will show FirstFragment different title
-                    return WordDetailsFragment.newInstance(1,dictionaryCode,word.getId() );
+                    return WordDetailsFragment.newInstance(1, dictionaryCode, word.getId());
                 case 2: // Fragment # 1 - This will show SecondFragment
-                    return WordDetailsFragment.newInstance(2,dictionaryCode,word.getId()+1);
+                    return WordDetailsFragment.newInstance(2, dictionaryCode, word.getId() + 1);
                 default:
                     return null;
             }

@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     public static final int RESULT_CODE_ADD = 113;
     public static final int RESULT_CODE_EDIT = 114;
     private AppBarConfiguration mAppBarConfiguration;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,8 +43,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, YourWord_Activity.class);
-                intent.putExtra("state",0);
-                startActivityForResult(intent,MainActivity.RESULT_CODE_ADD);
+                intent.putExtra("state", 0);
+                startActivityForResult(intent, MainActivity.RESULT_CODE_ADD);
             }
         });
 
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_en_en, R.id.nav_vn_en,R.id.nav_favorites,R.id.nav_your_words,
+                R.id.nav_home, R.id.nav_en_en, R.id.nav_vn_en, R.id.nav_favorites, R.id.nav_your_words,
                 R.id.nav_flashcard, R.id.nav_speaking)
                 .setDrawerLayout(drawer)
                 .build();
@@ -61,14 +62,15 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
     }
+
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data){
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == Activity.RESULT_OK) {
-            if(requestCode == RESULT_CODE_ADD) {
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == RESULT_CODE_ADD) {
                 Bundle returnBundle = data.getExtras().getBundle("returnPackage");
                 Word word = (Word) returnBundle.getSerializable("addWord");
-                DatabaseAccess dbAccess = DatabaseAccess.getInstance(this,DATABASE_EN_VIE);
+                DatabaseAccess dbAccess = DatabaseAccess.getInstance(this, DATABASE_EN_VIE);
                 if (dbAccess.addNewWordIntoYours(word)) {
                     YourWordsFragment.favorites.add(word);
                     YourWordsFragment.customApdater.notifyDataSetChanged();

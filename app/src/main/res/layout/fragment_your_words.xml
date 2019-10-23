@@ -5,10 +5,10 @@
     android:layout_height="match_parent">
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_your_word"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="10dp"
-        android:id="@+id/rv_your_word"/>
+        android:layout_marginRight="20dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

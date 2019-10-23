@@ -19,27 +19,29 @@ public class DatabaseAccess {
     private SQLiteDatabase database;
     private static DatabaseAccess instance;
     private static String dataTable;
-    private DatabaseAccess(Context context,String dataTable){
-        this.openHelper = new DatabaseOpenHelper(context,dataTable + ".db");
+
+    private DatabaseAccess(Context context, String dataTable) {
+        this.openHelper = new DatabaseOpenHelper(context, dataTable + ".db");
         DatabaseAccess.dataTable = dataTable;
     }
-    public static DatabaseAccess getInstance(Context context,String dataTable){
-        if(instance == null){
-            instance = new DatabaseAccess(context,dataTable);
+
+    public static DatabaseAccess getInstance(Context context, String dataTable) {
+        if (instance == null) {
+            instance = new DatabaseAccess(context, dataTable);
         } else {
-            if(!DatabaseAccess.dataTable.equals(dataTable)) {
-                instance = new DatabaseAccess(context,dataTable);
+            if (!DatabaseAccess.dataTable.equals(dataTable)) {
+                instance = new DatabaseAccess(context, dataTable);
             }
         }
         return instance;
     }
 
-    public ArrayList<String> getWRds(){
+    public ArrayList<String> getWRds() {
         openDB();
         ArrayList<String> list = new ArrayList<>();
-        Cursor cursor = database.rawQuery("Select * from " + dataTable  ,null);
+        Cursor cursor = database.rawQuery("Select * from " + dataTable, null);
         cursor.moveToFirst();
-        while(!cursor.isAfterLast()){
+        while (!cursor.isAfterLast()) {
             list.add(cursor.getString(1));
             cursor.moveToNext();
         }
@@ -47,15 +49,16 @@ public class DatabaseAccess {
         closeDB();
         return list;
     }
-    public ArrayList<Word> getWordsOffset(int id, int offset){
+
+    public ArrayList<Word> getWordsOffset(int id, int offset) {
         openDB();
         ArrayList<Word> list = new ArrayList<>();
-        Cursor cursor = database.rawQuery("select * from " + dataTable   +
-                " WHERE id >= "+ id + " limit " + offset,null);
+        Cursor cursor = database.rawQuery("select * from " + dataTable +
+                " WHERE id >= " + id + " limit " + offset, null);
         cursor.moveToFirst();
-        while(!cursor.isAfterLast()){
+        while (!cursor.isAfterLast()) {
             list.add(new Word(cursor.getInt(0),
-                    cursor.getString(1),cursor.getString(2)))  ;
+                    cursor.getString(1), cursor.getString(2)));
             cursor.moveToNext();
         }
         cursor.close();
@@ -63,11 +66,11 @@ public class DatabaseAccess {
         return list;
     }
 
-    public Word getWordsById(int id){
+    public Word getWordsById(int id) {
         openDB();
         Word word = new Word();
-        Cursor cursor = database.rawQuery("Select * from " + dataTable   +
-                " where id = " + id,null);
+        Cursor cursor = database.rawQuery("Select * from " + dataTable +
+                " where id = " + id, null);
         cursor.moveToFirst();
         word.setId(cursor.getInt(0));
         word.setName(cursor.getString(1));
@@ -78,40 +81,40 @@ public class DatabaseAccess {
         return word;
     }
 
-    public String getDefinition(String word){
+    public String getDefinition(String word) {
         String definition = " ";
         Cursor cursor = database.rawQuery("Select * from anh_viet " +
-                "where word = '" + word +"'",null);
+                "where word = '" + word + "'", null);
         cursor.moveToFirst();
         definition = cursor.getString(2);
         cursor.close();
         return definition;
     }
 
-    public void openDB(){
+    public void openDB() {
         this.database = openHelper.getWritableDatabase();
     }
 
-    public void closeDB(){
-        if(database!=null){
+    public void closeDB() {
+        if (database != null) {
             this.database.close();
         }
     }
 
     public ArrayList<String> getWordsStartWith(String str) {
         ArrayList<String> list = new ArrayList<>();
-        try{
+        try {
             openDB();
-            Cursor cursor = database.rawQuery("select * from " + dataTable   +
-                    " WHERE word like "+"'" + str + "%'" + " limit 30",null);
+            Cursor cursor = database.rawQuery("select * from " + dataTable +
+                    " WHERE word like " + "'" + str + "%'" + " limit 30", null);
             cursor.moveToFirst();
-            while(!cursor.isAfterLast()){
+            while (!cursor.isAfterLast()) {
                 list.add(cursor.getString(1));
                 cursor.moveToNext();
             }
             cursor.close();
             closeDB();
-        }catch (IllegalStateException err) {
+        } catch (IllegalStateException err) {
             err.printStackTrace();
         }
         return list;
@@ -121,13 +124,13 @@ public class DatabaseAccess {
         try {
             openDB();
             Cursor cursor = database.rawQuery("select * from " + dataTable
-                    + " where word = " +  "\"" + word.trim() + "\"",null);
+                    + " where word = " + "\"" + word.trim() + "\"", null);
             cursor.moveToFirst();
             Word word1 = new Word(cursor.getInt(0),
-                    cursor.getString(1),cursor.getString(2));
+                    cursor.getString(1), cursor.getString(2));
             cursor.close();
             closeDB();
-            return  word1;
+            return word1;
         } catch (Exception err) {
             err.printStackTrace();
             return null;
@@ -137,11 +140,11 @@ public class DatabaseAccess {
     public ArrayList<Word> getAllWords() {
         openDB();
         ArrayList<Word> list = new ArrayList<>();
-        Cursor cursor = database.rawQuery("select * from " + dataTable,null);
+        Cursor cursor = database.rawQuery("select * from " + dataTable, null);
         cursor.moveToFirst();
-        while(!cursor.isAfterLast()){
+        while (!cursor.isAfterLast()) {
             list.add(new Word(cursor.getInt(0),
-                    cursor.getString(1),cursor.getString(2)));
+                    cursor.getString(1), cursor.getString(2)));
             cursor.moveToNext();
         }
         cursor.close();
@@ -153,11 +156,11 @@ public class DatabaseAccess {
         openDB();
         ArrayList<Word> list = new ArrayList<>();
         Cursor cursor = database.rawQuery("select * from " + dataTable + " a inner join "
-                + MainActivity.FAVORITE + " b on a.id=b.id",null);
+                + MainActivity.FAVORITE + " b on a.id=b.id", null);
         cursor.moveToFirst();
-        while(!cursor.isAfterLast()){
+        while (!cursor.isAfterLast()) {
             list.add(new Word(cursor.getInt(0),
-                    cursor.getString(1),cursor.getString(2)));
+                    cursor.getString(1), cursor.getString(2)));
             cursor.moveToNext();
         }
         cursor.close();
@@ -169,8 +172,8 @@ public class DatabaseAccess {
         openDB();
         boolean result = false;
         Cursor cursor = database.rawQuery("select * from " + MainActivity.FAVORITE
-                + " where id = " + wordId ,null);
-        if(cursor.getCount()==1) {
+                + " where id = " + wordId, null);
+        if (cursor.getCount() == 1) {
             result = true;
         }
         cursor.close();
@@ -183,47 +186,46 @@ public class DatabaseAccess {
         try {
             openDB();
             ContentValues value = new ContentValues();
-            value.put("id",wordId);
-            database.insert(MainActivity.FAVORITE,null,value);
+            value.put("id", wordId);
+            database.insert(MainActivity.FAVORITE, null, value);
             closeDB();
             result = true;
         } catch (Exception ex) {
             ex.printStackTrace();
-        }
-        finally {
-            return  result;
+        } finally {
+            return result;
         }
     }
 
     public List<Word> getAllOfYourWords() {
         openDB();
         ArrayList<Word> list = new ArrayList<>();
-        Cursor cursor = database.rawQuery("select * from " + MainActivity.YOUR_WORD,null);
+        Cursor cursor = database.rawQuery("select * from " + MainActivity.YOUR_WORD, null);
         cursor.moveToFirst();
-        while(!cursor.isAfterLast()){
+        while (!cursor.isAfterLast()) {
             list.add(new Word(cursor.getInt(0),
-                    cursor.getString(1),cursor.getString(2)));
+                    cursor.getString(1), cursor.getString(2)));
             cursor.moveToNext();
         }
         cursor.close();
         closeDB();
         return list;
     }
+
     public boolean addNewWordIntoYours(Word word) {
         boolean result = false;
         try {
             openDB();
             ContentValues value = new ContentValues();
-            value.put("word",word.getName());
-            value.put("content",word.getContent());
-            database.insert(MainActivity.YOUR_WORD,null,value);
+            value.put("word", word.getName());
+            value.put("content", word.getContent());
+            database.insert(MainActivity.YOUR_WORD, null, value);
             closeDB();
             result = true;
         } catch (Exception ex) {
             ex.printStackTrace();
-        }
-        finally {
-            return  result;
+        } finally {
+            return result;
         }
     }
 
@@ -232,16 +234,15 @@ public class DatabaseAccess {
         try {
             openDB();
             ContentValues value = new ContentValues();
-            value.put("word",word.getName());
-            value.put("content",word.getContent());
-            database.update(MainActivity.YOUR_WORD,value," id = " + word.getId(),null);
+            value.put("word", word.getName());
+            value.put("content", word.getContent());
+            database.update(MainActivity.YOUR_WORD, value, " id = " + word.getId(), null);
             closeDB();
             result = true;
         } catch (Exception ex) {
             ex.printStackTrace();
-        }
-        finally {
-            return  result;
+        } finally {
+            return result;
         }
     }
 
@@ -249,13 +250,12 @@ public class DatabaseAccess {
         boolean result = false;
         try {
             openDB();
-            database.delete(MainActivity.YOUR_WORD," id = " + id,null);
+            database.delete(MainActivity.YOUR_WORD, " id = " + id, null);
             closeDB();
             result = true;
         } catch (Exception ex) {
             ex.printStackTrace();
-        }
-        finally {
+        } finally {
             return result;
         }
     }
@@ -264,13 +264,12 @@ public class DatabaseAccess {
         boolean result = false;
         try {
             openDB();
-            database.delete(MainActivity.FAVORITE," id = " + id,null);
+            database.delete(MainActivity.FAVORITE, " id = " + id, null);
             closeDB();
             result = true;
         } catch (Exception ex) {
             ex.printStackTrace();
-        }
-        finally {
+        } finally {
             return result;
         }
     }

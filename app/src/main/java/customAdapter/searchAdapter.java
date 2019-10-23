@@ -47,6 +47,7 @@ public class searchAdapter extends ArrayAdapter<String> {
     public class ViewHolder {
         TextView mTvSearch;
     }
+
     private Filter myFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
@@ -69,26 +70,27 @@ public class searchAdapter extends ArrayAdapter<String> {
 
         @Override
         protected void publishResults(CharSequence charSequence, FilterResults results) {
-            ArrayList<String> c =  (ArrayList<String> )results.values ;
+            ArrayList<String> c = (ArrayList<String>) results.values;
             if (results != null && results.count > 0) {
                 clear();
                 for (String str : c) {
                     add(str);
                     notifyDataSetChanged();
                 }
-            }
-            else{
+            } else {
                 clear();
                 notifyDataSetChanged();
             }
         }
+
         @Override
         public CharSequence convertResultToString(Object resultValue) {
             return resultValue.toString();
         }
     };
+
     @Override
-    public Filter getFilter(){
+    public Filter getFilter() {
         return myFilter;
     }
 

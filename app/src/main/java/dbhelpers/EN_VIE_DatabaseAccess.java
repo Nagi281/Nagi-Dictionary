@@ -14,23 +14,25 @@ public class EN_VIE_DatabaseAccess {
     private SQLiteOpenHelper openHelper;
     private SQLiteDatabase database;
     private static EN_VIE_DatabaseAccess instance;
-    private final static String DB_NAME_AV  = "anh_viet.db";
+    private final static String DB_NAME_AV = "anh_viet.db";
     private final static String DB_NAME = "anh_viet";
-    private EN_VIE_DatabaseAccess(Context context){
-        this.openHelper = new DatabaseOpenHelper(context,DB_NAME_AV );
+
+    private EN_VIE_DatabaseAccess(Context context) {
+        this.openHelper = new DatabaseOpenHelper(context, DB_NAME_AV);
     }
-    public static EN_VIE_DatabaseAccess getInstance(Context context){
-        if(instance == null){
+
+    public static EN_VIE_DatabaseAccess getInstance(Context context) {
+        if (instance == null) {
             instance = new EN_VIE_DatabaseAccess(context);
         }
         return instance;
     }
 
-    public ArrayList<String> getWRds(){
+    public ArrayList<String> getWRds() {
         ArrayList<String> list = new ArrayList<>();
-        Cursor cursor = database.rawQuery("Select * from " + DB_NAME  ,null);
+        Cursor cursor = database.rawQuery("Select * from " + DB_NAME, null);
         cursor.moveToFirst();
-        while(!cursor.isAfterLast()){
+        while (!cursor.isAfterLast()) {
             list.add(cursor.getString(1));
             cursor.moveToNext();
         }
@@ -38,15 +40,16 @@ public class EN_VIE_DatabaseAccess {
         return list;
 
     }
-    public ArrayList<Word> getWordsOffset(int id, int offset){
+
+    public ArrayList<Word> getWordsOffset(int id, int offset) {
         openDB();
         ArrayList<Word> list = new ArrayList<>();
-        Cursor cursor = database.rawQuery("select * from " + DB_NAME   +
-                " WHERE id >= "+ id + " limit " + offset,null);
+        Cursor cursor = database.rawQuery("select * from " + DB_NAME +
+                " WHERE id >= " + id + " limit " + offset, null);
         cursor.moveToFirst();
-        while(!cursor.isAfterLast()){
+        while (!cursor.isAfterLast()) {
             list.add(new Word(cursor.getInt(0),
-                    cursor.getString(1),cursor.getString(2)))  ;
+                    cursor.getString(1), cursor.getString(2)));
             cursor.moveToNext();
         }
         cursor.close();
@@ -54,11 +57,11 @@ public class EN_VIE_DatabaseAccess {
         return list;
     }
 
-    public Word getWordsById(int id){
+    public Word getWordsById(int id) {
         openDB();
         Word word = new Word();
-        Cursor cursor = database.rawQuery("Select * from " + DB_NAME   +
-                " where id = " + id,null);
+        Cursor cursor = database.rawQuery("Select * from " + DB_NAME +
+                " where id = " + id, null);
         cursor.moveToFirst();
         word.setId(cursor.getInt(0));
         word.setName(cursor.getString(1));
@@ -69,22 +72,22 @@ public class EN_VIE_DatabaseAccess {
         return word;
     }
 
-    public String getDefinition(String word){
+    public String getDefinition(String word) {
         String definition = " ";
         Cursor cursor = database.rawQuery("Select * from anh_viet " +
-                                                "where word = '" + word +"'",null);
+                "where word = '" + word + "'", null);
         cursor.moveToFirst();
         definition = cursor.getString(2);
         cursor.close();
         return definition;
     }
 
-    public void openDB(){
+    public void openDB() {
         this.database = openHelper.getWritableDatabase();
     }
 
-    public void closeDB(){
-        if(database!=null){
+    public void closeDB() {
+        if (database != null) {
             this.database.close();
         }
     }
@@ -92,10 +95,10 @@ public class EN_VIE_DatabaseAccess {
     public ArrayList<String> getWordsStartWith(String str) {
         openDB();
         ArrayList<String> list = new ArrayList<>();
-        Cursor cursor = database.rawQuery("select * from " + DB_NAME   +
-                " WHERE word like "+"'" + str + "%'" + " limit 10",null);
+        Cursor cursor = database.rawQuery("select * from " + DB_NAME +
+                " WHERE word like " + "'" + str + "%'" + " limit 10", null);
         cursor.moveToFirst();
-        while(!cursor.isAfterLast()){
+        while (!cursor.isAfterLast()) {
             list.add(cursor.getString(1));
             cursor.moveToNext();
         }
@@ -107,14 +110,14 @@ public class EN_VIE_DatabaseAccess {
     public Word getWordByName(String word) {
         try {
             openDB();
-            Cursor cursor = database.rawQuery("select * from " + DB_NAME  
-                    + " where word = " +  "\"" + word.trim() + "\"",null);
+            Cursor cursor = database.rawQuery("select * from " + DB_NAME
+                    + " where word = " + "\"" + word.trim() + "\"", null);
             cursor.moveToFirst();
             Word word1 = new Word(cursor.getInt(0),
-                    cursor.getString(1),cursor.getString(2));
+                    cursor.getString(1), cursor.getString(2));
             cursor.close();
             closeDB();
-            return  word1;
+            return word1;
         } catch (Exception err) {
             err.printStackTrace();
             return null;
@@ -123,11 +126,11 @@ public class EN_VIE_DatabaseAccess {
 
     public ArrayList<Word> getAllWords() {
         ArrayList<Word> list = new ArrayList<>();
-        Cursor cursor = database.rawQuery("select * from " + DB_NAME,null);
+        Cursor cursor = database.rawQuery("select * from " + DB_NAME, null);
         cursor.moveToFirst();
-        while(!cursor.isAfterLast()){
+        while (!cursor.isAfterLast()) {
             list.add(new Word(cursor.getInt(0),
-                    cursor.getString(1),cursor.getString(2)));
+                    cursor.getString(1), cursor.getString(2)));
             cursor.moveToNext();
         }
         cursor.close();

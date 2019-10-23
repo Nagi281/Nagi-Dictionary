@@ -20,7 +20,7 @@ import model.Word;
 public class customApdater extends RecyclerView.Adapter<customApdater.WordViewHolder> {
     private List<Word> words;
     private Activity activity;
-    /**Contructor*/
+
     public customApdater(List<Word> words) {
 //        this.activity = activity;
         this.words = words;
@@ -30,7 +30,7 @@ public class customApdater extends RecyclerView.Adapter<customApdater.WordViewHo
     public WordViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         /** Get layout */
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item,parent,false);
+                .inflate(R.layout.item, parent, false);
         return new WordViewHolder(view);
     }
 
@@ -56,7 +56,7 @@ public class customApdater extends RecyclerView.Adapter<customApdater.WordViewHo
         return words.size();
     }
 
-    class WordViewHolder extends  RecyclerView.ViewHolder {
+    class WordViewHolder extends RecyclerView.ViewHolder {
         private TextView name;
         private TextView intro;
 

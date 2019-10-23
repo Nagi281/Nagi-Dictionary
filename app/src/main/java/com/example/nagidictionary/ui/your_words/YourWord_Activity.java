@@ -21,6 +21,7 @@ public class YourWord_Activity extends AppCompatActivity {
     private Button mBtnConfirm;
     private int state;
     private int wordId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,7 +29,7 @@ public class YourWord_Activity extends AppCompatActivity {
         addControl();
         Intent intent = getIntent();
         state = intent.getExtras().getInt("state");
-        if(state == 1) {
+        if (state == 1) {
             Bundle bundle = intent.getExtras().getBundle("package");
             Word word = (Word) bundle.getSerializable("word");
             wordId = word.getId();
@@ -36,6 +37,7 @@ public class YourWord_Activity extends AppCompatActivity {
             mEdtContent.setText(word.getContent());
         }
     }
+
     @Override
     public void onBackPressed() {
         setResult(Activity.RESULT_CANCELED);
@@ -55,17 +57,17 @@ public class YourWord_Activity extends AppCompatActivity {
     }
 
     public void onBtnConfirmClick(View v) {
-        if(mEdtName.getText().toString().equals("") || mEdtContent.getText().toString().equals("")) {
+        if (mEdtName.getText().toString().equals("") || mEdtContent.getText().toString().equals("")) {
             Toast.makeText(this, "Please input data!", Toast.LENGTH_SHORT).show();
         } else {
             Word newContact = new Word(wordId,
                     mEdtName.getText().toString(),
                     mEdtContent.getText().toString());
             Bundle returnBundle = new Bundle();
-            returnBundle.putSerializable("addWord",newContact);
+            returnBundle.putSerializable("addWord", newContact);
             final Intent returnResult = new Intent();
-            returnResult.putExtra("returnPackage",returnBundle);
-            setResult(Activity.RESULT_OK,returnResult);
+            returnResult.putExtra("returnPackage", returnBundle);
+            setResult(Activity.RESULT_OK, returnResult);
             finish();
         }
     }

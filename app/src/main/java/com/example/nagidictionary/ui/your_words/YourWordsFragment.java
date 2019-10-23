@@ -38,7 +38,7 @@ public class YourWordsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_your_words, container, false);
-        dbAccess = DatabaseAccess.getInstance(getContext(),MainActivity.DATABASE_EN_VIE);
+        dbAccess = DatabaseAccess.getInstance(getContext(), MainActivity.DATABASE_EN_VIE);
         recyclerView = root.findViewById(R.id.rv_your_word);
         mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
@@ -48,25 +48,30 @@ public class YourWordsFragment extends Fragment {
         new WordLoaderTask().execute();
         return root;
     }
+
     private void addEvent() {
         recyclerView.addOnItemTouchListener(
-            new RecyclerItemClickListener(getContext(),recyclerView,
-                new RecyclerItemClickListener.OnItemClickListener() {
-                    @Override public void onItemClick(View view, int position) {
-                        Intent intent = new Intent(getActivity(), YourWord_Activity.class);
-                        Bundle bundle = new Bundle();
-                        intent.putExtra("state",1);
-                        bundle.putSerializable("word",favorites.get(position));
-                        intent.putExtra("package",bundle);
-                        index = position;
-                        startActivityForResult(intent,MainActivity.RESULT_CODE_EDIT);
-                    }
-                    @Override public void onLongItemClick(View view, final int position) {
-                        deteleAWord(position);
-                    }
-                })
+                new RecyclerItemClickListener(getContext(), recyclerView,
+                        new RecyclerItemClickListener.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View view, int position) {
+                                Intent intent = new Intent(getActivity(), YourWord_Activity.class);
+                                Bundle bundle = new Bundle();
+                                intent.putExtra("state", 1);
+                                bundle.putSerializable("word", favorites.get(position));
+                                intent.putExtra("package", bundle);
+                                index = position;
+                                startActivityForResult(intent, MainActivity.RESULT_CODE_EDIT);
+                            }
+
+                            @Override
+                            public void onLongItemClick(View view, final int position) {
+                                deteleAWord(position);
+                            }
+                        })
         );
     }
+
     public void deteleAWord(final int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Delete Confirm!");
@@ -75,12 +80,12 @@ public class YourWordsFragment extends Fragment {
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if(dbAccess.deleteWord(favorites.get(position).getId())){
+                if (dbAccess.deleteWord(favorites.get(position).getId())) {
                     favorites.remove(position);
                     customApdater.notifyDataSetChanged();
-                    Toast.makeText(getContext(),"Deleted!",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Deleted!", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getContext(),"Something went wrong!",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Something went wrong!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -93,11 +98,12 @@ public class YourWordsFragment extends Fragment {
 
         builder.show();
     }
+
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data){
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == Activity.RESULT_OK) {
-            if(requestCode == MainActivity.RESULT_CODE_EDIT) {
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == MainActivity.RESULT_CODE_EDIT) {
                 editComplete(data);
             }
         }
@@ -106,27 +112,30 @@ public class YourWordsFragment extends Fragment {
     public void editComplete(Intent data) {
         Bundle returnBundle = data.getExtras().getBundle("returnPackage");
         Word word = (Word) returnBundle.getSerializable("addWord");
-        DatabaseAccess dbAccess = DatabaseAccess.getInstance(getContext(),MainActivity.DATABASE_EN_VIE);
-        if(dbAccess.editAWord(word)) {
+        DatabaseAccess dbAccess = DatabaseAccess.getInstance(getContext(), MainActivity.DATABASE_EN_VIE);
+        if (dbAccess.editAWord(word)) {
             favorites.remove(index);
-            favorites.add(index,word);
+            favorites.add(index, word);
             customApdater.notifyDataSetChanged();
-            Toast.makeText(getContext(),"Update completed!",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Update completed!", Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(getContext(),"Something wrong",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Something wrong", Toast.LENGTH_SHORT).show();
         }
     }
+
     public void loadYourWords() {
         List<Word> love = dbAccess.getAllOfYourWords();
         favorites.clear();
         favorites.addAll(love);
     }
+
     class WordLoaderTask extends AsyncTask<Void, Void, Void> {
 
         protected Void doInBackground(Void... params) {
             loadYourWords();
             return null;
         }
+
         protected void onPostExecute(Void param) {
             customApdater.notifyDataSetChanged();
         }
