@@ -2,6 +2,7 @@ package com.example.nagidictionary;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toolbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -30,6 +31,7 @@ public class WordActivity extends AppCompatActivity {
             getSupportActionBar().setHomeButtonEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         } catch (Exception e) {
+            e.printStackTrace();
         }
 
         mVpWord = findViewById(R.id.vp_Word);
@@ -38,7 +40,11 @@ public class WordActivity extends AppCompatActivity {
         mVpWord.setCurrentItem(1);
         mVpWord.setOffscreenPageLimit(3);
     }
-
+    @Override
+    public boolean onSupportNavigateUp(){
+        finish();
+        return true;
+    }
     public static class MyPagerAdapter extends FragmentPagerAdapter {
         private static int NUM_ITEMS = 3;
 
