@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -150,11 +151,10 @@ public class FlashCardPageFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK && requestCode == REQUEST_SPEAK) {
-            ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-            String listened = result.get(0);
-            mTvScoreLabel.setText("Score");
-            mTvScore.setText(getScore(listened, word.getName()));
-            mTvListened.setText(listened);
+            ArrayList<String> result = data
+                    .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+            mTvScore.setText(getScore(result.get(0), word.getName()));
+            mTvListened.setText(result.get(0));
         }
     }
 

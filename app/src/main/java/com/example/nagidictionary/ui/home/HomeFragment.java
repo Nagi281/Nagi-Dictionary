@@ -182,7 +182,10 @@ public class HomeFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
-            mAcTvSearch.setText(RecognizerIntent.EXTRA_RESULTS.toString());
+            ArrayList<String> resultString = data
+                    .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+            String listened = resultString.get(0);
+            mAcTvSearch.setText(listened);
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
