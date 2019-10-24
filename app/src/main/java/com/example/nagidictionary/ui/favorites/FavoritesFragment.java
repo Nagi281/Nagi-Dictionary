@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.nagidictionary.MainActivity;
@@ -20,7 +21,7 @@ import model.Word;
 public class FavoritesFragment extends Fragment {
     private static Word word;
     private ViewPager mVpWord;
-    FragmentPagerAdapter adapterViewPager;
+    FavoriteAdapter adapterViewPager;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -35,8 +36,8 @@ public class FavoritesFragment extends Fragment {
         return root;
     }
 
-    public static class FavoriteAdapter extends FragmentPagerAdapter {
-        private static int NUM_ITEMS = 2;
+    public class FavoriteAdapter extends FragmentStatePagerAdapter {
+        private int NUM_ITEMS = 2;
         private String[] titles = {"English - Vietnamese", "Vietnamese - English"};
 
         public FavoriteAdapter(FragmentManager fragmentManager) {

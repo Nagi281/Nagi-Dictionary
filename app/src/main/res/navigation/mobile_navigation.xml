@@ -34,13 +34,13 @@
         tools:layout="@layout/fragment_your_words" />
     <fragment
         android:id="@+id/nav_flashcard"
-        android:name="com.example.nagidictionary.ui.speaking.SpeakingCoachFragment"
-        android:label="@string/menu_share"
+        android:name="com.example.nagidictionary.ui.flashcard.FlashCardFragment"
+        android:label="@string/menu_flashcard"
         tools:layout="@layout/fragment_flashcard" />
 
     <fragment
         android:id="@+id/nav_speaking"
-        android:name="com.example.nagidictionary.ui.flashcard.FlashCardFragment"
-        android:label="@string/menu_help"
+        android:name="com.example.nagidictionary.ui.speaking.SpeakingCoachFragment"
+        android:label="@string/menu_speak_coach"
         tools:layout="@layout/fragment_speaking" />
 </navigation>

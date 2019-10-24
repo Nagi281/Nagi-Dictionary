@@ -26,16 +26,16 @@
             android:title="@string/menu_your_words" />
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="Practice">
         <menu>
             <item
                 android:id="@+id/nav_flashcard"
                 android:icon="@drawable/ic_thumb_up_black_24dp"
-                android:title="@string/menu_share" />
+                android:title="@string/menu_flashcard" />
             <item
                 android:id="@+id/nav_speaking"
                 android:icon="@drawable/ic_live_help_black_24dp"
-                android:title="@string/menu_help" />
+                android:title="@string/menu_speak_coach" />
         </menu>
     </item>
 

@@ -11,6 +11,9 @@
     <string name="menu_favorites">Favorites</string>
     <string name="menu_your_words">Your Words</string>
 
+    <string name="menu_flashcard">Flash Card</string>
+    <string name="menu_speak_coach">Speaking Coach</string>
+
     <string name="menu_share">Share</string>
     <string name="menu_help">Help</string>
 

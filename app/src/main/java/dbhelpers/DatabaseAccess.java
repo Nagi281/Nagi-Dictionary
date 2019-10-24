@@ -11,6 +11,7 @@ import com.example.nagidictionary.MainActivity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import model.Word;
 
@@ -19,6 +20,7 @@ public class DatabaseAccess {
     private SQLiteDatabase database;
     private static DatabaseAccess instance;
     private static String dataTable;
+    private static int databaseSize = 350000;
 
     private DatabaseAccess(Context context, String dataTable) {
         this.openHelper = new DatabaseOpenHelper(context, dataTable + ".db");
@@ -52,6 +54,25 @@ public class DatabaseAccess {
 
     public ArrayList<Word> getWordsOffset(int id, int offset) {
         openDB();
+        ArrayList<Word> list = new ArrayList<>();
+        Cursor cursor = database.rawQuery("select * from " + dataTable +
+                " WHERE id >= " + id + " limit " + offset, null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            list.add(new Word(cursor.getInt(0),
+                    cursor.getString(1), cursor.getString(2)));
+            cursor.moveToNext();
+        }
+        cursor.close();
+        closeDB();
+        return list;
+    }
+
+    public ArrayList<Word> getListRandomForFlashCard(int offset) {
+        openDB();
+        int id;
+        Random rand = new Random();
+        id = rand.nextInt(databaseSize);
         ArrayList<Word> list = new ArrayList<>();
         Cursor cursor = database.rawQuery("select * from " + dataTable +
                 " WHERE id >= " + id + " limit " + offset, null);
